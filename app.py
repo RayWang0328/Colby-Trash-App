@@ -15,6 +15,7 @@ import base64
 import torch
 from script import delete_big, delete_rock, delete_overlap, does_box1_cover_box2, delete_box, isolate, bb_intersection_over_union, get_lat_lon, get_geotagging, get_altitude, get_exif
 from routes.remove_overlap import remove_overlap
+from routes.mapping import mapping
 from python.config import app
 
 from GroundingDINO.groundingdino.util.inference import Model

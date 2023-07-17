@@ -1,12 +1,12 @@
-from flask import render_template, request, session, jsonify
+from flask import redirect, render_template, url_for
 from python.config import app
 import csv
 from pyproj import Transformer
-from ..script import calculate_GSD
+from script import calculate_GSD
 import statistics
 import folium
 
-@app.route('/mapping/', methods=['POST'])
+@app.route('/mapping', methods=['POST'])
 def mapping():
 
     boxes = []
@@ -52,6 +52,10 @@ def mapping():
 
 
             box1 = [tl_lon,tl_lat,br_lon,br_lat]
+            lats.append(tl_lat)
+            longs.append(tl_lon)
+            lats.append(br_lat)
+            longs.append(br_lon)
             boxes.append(box1)
 
 
@@ -67,9 +71,13 @@ def mapping():
             name = 'Esri Satellite',
             overlay = False,
             control = True
-        ).add_to(m)
-
+        )
+    
     m = folium.Map(location=[average_lat, average_long], zoom_start=15, max_zoom = 40, tiles=tile)
+    
+    tile.add_to(m)
+
+  
 
     
     for i, box1 in enumerate(boxes):
@@ -114,4 +122,13 @@ def mapping():
 
     m.get_root().html.add_child(folium.Element(legend_html))
 
-    return m._repr_html_()
+    # Save map to a HTML file
+    m.save('templates/hal.html')
+
+    # Redirect to the new map page
+    return redirect(url_for('show_map'))
+
+
+@app.route('/show_map', methods=['GET'])
+def show_map():
+    return render_template('hal.html')

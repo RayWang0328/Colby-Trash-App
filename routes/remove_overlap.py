@@ -3,7 +3,6 @@ import pandas as pd
 import cv2
 from scipy.spatial import KDTree
 import numpy as np
-from multiprocessing import Pool
 from werkzeug.utils import secure_filename
 from PIL import Image
 from python.config import app

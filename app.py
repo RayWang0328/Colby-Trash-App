@@ -72,6 +72,10 @@ def check_csv():
 def overlap():
     return render_template('overlap.html')
 
+@app.route('/map/')
+def maps():
+    return render_template('map.html')
+
 @app.route('/process_images', methods=['POST'])
 def process_images():
     if 'img_directory' not in request.files:

@@ -195,7 +195,6 @@ def remove_overlap():
         for item in group_list[1:]:
             Overlapped.append(item)
             
-    print(Overlapped)
 
     to_remove_tuples = [tuple(x.split('||')) for x in Overlapped]
 

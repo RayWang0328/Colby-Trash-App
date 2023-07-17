@@ -1,0 +1,49 @@
+<!-- map.html -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Map Viewer</title>
+
+    <style>
+        #map {
+            width: 600px;
+            height: 400px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/csv/">Csv</a>
+        <a href="/overlap/">Overlap</a>
+        <a href="/map/">Map</a>
+    </nav>
+    <h1>Map Viewer</h1>
+
+    <button id="showMapBtn">Show Map</button>
+
+    <div id="map"></div>
+
+    <script>
+        const mapElement = document.getElementById('map');
+        const btn = document.getElementById('showMapBtn');
+
+        btn.addEventListener('click', () => {
+            // Send POST request to /map route
+            fetch('/mapping', {
+                method: 'POST'
+            })
+                .then(response => response.text())
+                .then(html => {
+                    // Set map element's innerHTML as response 
+                    mapElement.innerHTML = html;
+                });
+        });
+    </script>
+
+</body>
+
+</html>

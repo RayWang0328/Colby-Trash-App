@@ -14,3 +14,5 @@ requests
 Flask-SocketIO
 pandas
 scripy
+pyproj
+folium

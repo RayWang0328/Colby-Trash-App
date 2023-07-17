@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Remove Overlap</title>
+</head>
+
+<body>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/csv/">CSV</a>
+        <a href="/overlap/">Overlap</a>
+    </nav>
+
+    <h1>Remove Overlapping Images</h1>
+
+    <input type="file" id="fileInput" multiple>
+    <button id="submitBtn">Submit</button>
+
+    <table id="results"></table>
+
+    <script>
+        const submitBtn = document.getElementById('submitBtn');
+        const fileInput = document.getElementById('fileInput');
+        const resultsTable = document.getElementById('results');
+
+        submitBtn.addEventListener('click', () => {
+            const files = fileInput.files;
+
+            // Create a FormData object and append the files
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append('img_directory', files[i]);
+            }
+
+            // Send POST request to the Python backend
+            fetch('/remove_overlap', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.text())
+                .then(data => {
+                    resultsTable.innerHTML = `<tr><td>${data}</td></tr>`;
+                });
+
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+Flask 
+numpy
+Werkzeug
+Pillow
+opencv-python
+transformers
+supervision
+waitress
+torch
+torchvision
+ctypes-callable
+piexif
+requests
+Flask-SocketIO
+pandas
+scripy

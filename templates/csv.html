@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Display CSV</title>
+</head>
+
+<body>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/csv/">Csv</a>
+    <a href="/overlap/">Overlap</a>
+  </nav>
+  <h1>Display CSV</h1>
+
+  <button id="load">Load Results</button>
+  
+  <!-- New download button -->
+  <button id="download">Download CSV</button>
+  
+  <table id="results"></table>
+
+  <script>
+    const resultsTable = document.getElementById('results');
+
+    document.getElementById('load').addEventListener('click', () => {
+
+      fetch('/get_results')
+        .then(response => response.text())
+        .then(data => {
+          const rows = data.split('\n');
+
+          resultsTable.innerHTML = '';
+
+          rows.forEach(row => {
+            const cols = row.split(',');
+
+            let tr = document.createElement('tr');
+
+            cols.forEach(col => {
+              let td = document.createElement('td');
+              td.textContent = col;
+              tr.appendChild(td);
+            });
+
+            resultsTable.appendChild(tr);
+          });
+        });
+    });
+
+    // Event listener for the download button
+    document.getElementById('download').addEventListener('click', () => {
+      window.location.href = '/download_results';
+    });
+
+  </script>
+
+</body>
+
+</html>

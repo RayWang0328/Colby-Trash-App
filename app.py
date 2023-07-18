@@ -121,76 +121,90 @@ def process_images():
 
         image_name = secure_filename(file.filename)
         
-        im = Image.open(io.BytesIO(filestr))
-        im = np.asarray(im)
-
-
-        detections1 = grounding_dino_model.predict_with_classes(
-            image=im,
-            classes=CLASSES, #enhance_class_name(class_names=CLASSES),
-            box_threshold=BOX_TRESHOLD,
-            text_threshold=TEXT_TRESHOLD
-        )
-        
-        detections2 = grounding_dino_model.predict_with_classes(
-        image=im,
-        classes=CLASSES, #enhance_class_name(class_names=CLASSES),
-        box_threshold= BOX_TRESHOLD - 0.15,
-        text_threshold=TEXT_TRESHOLD - 0.15
-        )
-
-        detections1 = delete_big(detections1, im)
-        detections1 = delete_rock(detections1)
-
-        detections2 = delete_big(detections2, im)
-        detections2 = delete_rock(detections2)
-
-    
-        xyxy = np.vstack((detections1.xyxy, detections2.xyxy))
-        mask = detections1.mask
-        confidence = np.concatenate((detections1.confidence,detections2.confidence))
-        class_id = np.concatenate((detections1.class_id, detections2.class_id))
-        tracker_id = detections1.tracker_id
-
-
-        detections = sv.Detections(xyxy,mask,confidence,class_id,tracker_id)
-
-        
-        detections = delete_overlap(detections)
-        detections = delete_box(detections)
-        
-        detections = detections[detections.class_id != None]
-        
-        
-        lon, lat = get_lat_lon(get_exif(file))
-        alt = get_altitude(file)
-
         df = pd.read_csv(csv_file_path)     
         seen = df.isin([image_name]).any().any() 
 
-        if detections.xyxy is not None:
-            for i in range(len(detections.xyxy)):
-                im = Image.fromarray(np.uint8(im)).convert('RGB')
-                img_np = np.array(im.crop(detections.xyxy[i]))
-                output_image = Image.fromarray(img_np.astype('uint8'))
-                buffered = BytesIO()
-                output_image.save(buffered, format="PNG")
-                img_str = base64.b64encode(buffered.getvalue())
-                img_str = img_str.decode('utf-8')
+        if seen == False:
+            im = Image.open(io.BytesIO(filestr))
+            im = np.asarray(im)
 
-               
-                crops.append(img_str)
-                predicted_class = predict_class(img_np)
+            detections1 = grounding_dino_model.predict_with_classes(
+                image=im,
+                classes=CLASSES, #enhance_class_name(class_names=CLASSES),
+                box_threshold=BOX_TRESHOLD,
+                text_threshold=TEXT_TRESHOLD
+            )
+            
+            detections2 = grounding_dino_model.predict_with_classes(
+            image=im,
+            classes=CLASSES, #enhance_class_name(class_names=CLASSES),
+            box_threshold= BOX_TRESHOLD - 0.15,
+            text_threshold=TEXT_TRESHOLD - 0.15
+            )
 
-                custom_values = [str(detections.xyxy[i][0]), str(detections.xyxy[i][1]), str(detections.xyxy[i][2]), str(detections.xyxy[i][3]), lon, lat, alt, image_name, i, predicted_class]
+            detections1 = delete_big(detections1, im)
+            detections1 = delete_rock(detections1)
 
-                if seen == False:
+            detections2 = delete_big(detections2, im)
+            detections2 = delete_rock(detections2)
+
+        
+            xyxy = np.vstack((detections1.xyxy, detections2.xyxy))
+            mask = detections1.mask
+            confidence = np.concatenate((detections1.confidence,detections2.confidence))
+            class_id = np.concatenate((detections1.class_id, detections2.class_id))
+            tracker_id = detections1.tracker_id
+
+
+            detections = sv.Detections(xyxy,mask,confidence,class_id,tracker_id)
+
+            
+            detections = delete_overlap(detections)
+            detections = delete_box(detections)
+            
+            detections = detections[detections.class_id != None]
+            
+            
+            lon, lat = get_lat_lon(get_exif(file))
+            alt = get_altitude(file)
+
+            
+
+            if detections.xyxy is not None:
+                for i in range(len(detections.xyxy)):
+                    im = Image.fromarray(np.uint8(im)).convert('RGB')
+                    img_np = np.array(im.crop(detections.xyxy[i]))
+                    output_image = Image.fromarray(img_np.astype('uint8'))
+                    buffered = BytesIO()
+                    output_image.save(buffered, format="PNG")
+                    img_str = base64.b64encode(buffered.getvalue())
+                    img_str = img_str.decode('utf-8')
+
+                
+                    crops.append(img_str)
+                    predicted_class = predict_class(img_np)
+
+                    custom_values = [str(detections.xyxy[i][0]), str(detections.xyxy[i][1]), str(detections.xyxy[i][2]), str(detections.xyxy[i][3]), lon, lat, alt, image_name, i, predicted_class]
+
                     with open(csv_file_path, 'a', newline='') as file:
                         writer = csv.writer(file)
                         writer.writerow(custom_values)
 
-                total.append(custom_values)
-                print(f'Row {custom_values} has been added to {csv_file_path}.')
+                    total.append(custom_values)
+                    print(f'Row {custom_values} has been added to {csv_file_path}.')
+        else:
+            im = Image.open(io.BytesIO(filestr))
+            for index, row in df.iterrows():
+                if image_name in str(row['image_name']):
+                    img_np = np.array(im.crop((row[0],row[1],row[2],row[3])))
+                    output_image = Image.fromarray(img_np.astype('uint8'))
+                    buffered = BytesIO()
+                    output_image.save(buffered, format="PNG")
+                    img_str = base64.b64encode(buffered.getvalue())
+                    img_str = img_str.decode('utf-8')
+                    crops.append(img_str)
+                    total.append([str(row[0]),str(row[1]),str(row[2]),str(row[3]),str(row[4]),str(row[5]),str(row[6]), str(row[7]),str(row[8]),str(row[9])])
+               
 
 
     return jsonify({'predicted_classes': [row[-3:] for row in total], 'crops': crops}), 200

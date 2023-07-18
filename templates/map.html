@@ -1,15 +1,18 @@
-<!-- map.html -->
-
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Map Viewer</title>
-
+    <title>Map Display</title>
     <style>
         #map {
-            width: 600px;
-            height: 400px;
+            height: 80vh;
+            width: 100%;
+            margin: 0 auto;
+            margin-top: 10;
+            display: block;
+        }
+        .reload {
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -17,34 +20,23 @@
 <body>
     <nav>
         <a href="/">Home</a>
-        <a href="/csv/">Csv</a>
+        <a href="/csv/">CSV</a>
         <a href="/overlap/">Overlap</a>
         <a href="/map/">Map</a>
     </nav>
-    <h1>Map Viewer</h1>
+    <h1>Display Map</h1>
+    <button class="reload" id="reload">Reload Map</button>
+    <iframe id="map" src="/show_map"></iframe>
+    <script src="/static/reload.js"></script>
 
-    <button id="showMapBtn">Show Map</button>
-
-    <h1>Render Folium on Flask 🌏</h1>
-    <iframe class="map", src="/show_map" width="600" height="600"></iframe>
 
     <script>
-        const mapElement = document.getElementById('map');
-        const btn = document.getElementById('showMapBtn');
-
-        btn.addEventListener('click', () => {
-            // Send POST request to /map route
-            fetch('/mapping', {
-                method: 'POST'
-            })
-                .then(response => response.text())
-                .then(html => {
-                    // Set map element's innerHTML as response 
-                    mapElement.innerHTML = html;
-                });
+        document.getElementById('reload').addEventListener('click', function () {
+            var map = document.getElementById('map');
+            var timestamp = new Date().getTime();
+            map.src = "/show_map?t=" + timestamp;
         });
     </script>
-
 </body>
 
 </html>

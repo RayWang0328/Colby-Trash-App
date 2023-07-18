@@ -59,12 +59,6 @@ def mapping():
             boxes.append(box1)
 
 
-
-
-
-    average_lat = statistics.mean(longs)
-    average_long = statistics.mean(lats)
-
     tile = folium.TileLayer(
             tiles = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
             attr = 'Esri',
@@ -72,8 +66,18 @@ def mapping():
             overlay = False,
             control = True
         )
+
+
+    if len(longs) != 0:
+        average_lat = statistics.mean(longs)
+        average_long = statistics.mean(lats)
+        m = folium.Map(location=[average_lat, average_long], zoom_start=15, max_zoom = 40, tiles=tile)
+    else: 
+        m = folium.Map(zoom_start=15, max_zoom = 40, tiles=tile)
+
     
-    m = folium.Map(location=[average_lat, average_long], zoom_start=15, max_zoom = 40, tiles=tile)
+    
+
     
     tile.add_to(m)
 
@@ -110,7 +114,7 @@ def mapping():
 
     # Add custom legend
     legend_html = '''
-    <div style="position: fixed; bottom: 50px; left: 50px; width: 120px; height: 130px; border:2px solid grey; z-index:9999; font-size:14px; color: white; background-color: rgba(0, 0, 0, 0.5);">
+    <div style="position: fixed; bottom: 75px; left: 50px; width: 120px; height: 180px; border:2px solid grey; z-index:9999; font-size:14px; color: white; background-color: rgba(0, 0, 0, 0.5);">
     &nbsp;<b>Legend:</b><br>
     '''
 
@@ -131,4 +135,5 @@ def mapping():
 
 @app.route('/show_map', methods=['GET'])
 def show_map():
+    mapping()
     return render_template('hal.html')

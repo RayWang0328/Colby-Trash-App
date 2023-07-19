@@ -16,3 +16,4 @@ pandas
 scripy
 pyproj
 folium
+lxml

@@ -25,17 +25,33 @@
         <a href="/map/">Map</a>
     </nav>
     <h1>Display Map</h1>
-    <button class="reload" id="reload">Reload Map</button>
+    <button id="reload">Reload Map</button>
+    <button id="submitBtn">Submit</button>
     <iframe id="map" src="/show_map"></iframe>
-    <script src="/static/reload.js"></script>
 
+    
 
     <script>
-        document.getElementById('reload').addEventListener('click', function () {
+        const submitBtn = document.getElementById('submitBtn');
+
+        submitBtn.addEventListener('click', () => {
             var map = document.getElementById('map');
             var timestamp = new Date().getTime();
-            map.src = "/show_map?t=" + timestamp;
+            map.src = "/show_map?" + timestamp; 
+            document.getElementById('map').contentWindow.location.reload();
         });
+
+
+        document.getElementById('reload').addEventListener('click', function() {
+        mapping();
+        
+        // existing code
+        var map = document.getElementById('map');
+        var timestamp = new Date().getTime();
+        map.src = "/show_map?t=" + timestamp; 
+        document.getElementById('map').contentWindow.location.reload();
+        });
+    
     </script>
 </body>
 

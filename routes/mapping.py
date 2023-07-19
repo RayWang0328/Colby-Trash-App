@@ -128,12 +128,14 @@ def mapping():
 
     # Save map to a HTML file
     m.save('templates/hal.html')
-
-    # Redirect to the new map page
-    return redirect(url_for('show_map'))
+    m.save('hal.html')
+   
+   
 
 
 @app.route('/show_map', methods=['GET'])
 def show_map():
-    mapping()
-    return render_template('hal.html')
+
+  mapping()
+  
+  return render_template("hal.html")

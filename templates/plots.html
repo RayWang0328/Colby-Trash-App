@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/csv/">CSV</a>
+        <a href="/overlap/">Overlap</a>
+        <a href="/map/">Map</a>
+        <a href="/plots/">Plot</a>
+    </nav>
+
+    <h1>Data analysis</h1>
+
+    <button onclick="runScript()">Run the script</button>
+
+    <div id="images"></div>
+
+    <script>
+        function runScript() {
+            fetch('/plotting', {
+                method: 'POST'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('images').innerHTML = '';
+                    data.images.forEach(image => {
+                        var img = document.createElement('img');
+                        img.src = 'data:image/png;base64,' + image;
+                        document.getElementById('images').appendChild(img);
+                    });
+                });
+        }
+    </script>
+
+</body>
+
+</html>

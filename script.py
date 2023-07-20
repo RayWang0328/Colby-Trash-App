@@ -61,9 +61,9 @@ def get_altitude(image_path):
     else:
         return None
 
-def calculate_GSD(alt):
+def calculate_GSD(alt, sensor_width, focal_length, image_width):
     
-    return (alt * 13.2 ) / (8.8 * 5472)
+    return (alt * sensor_width ) / (focal_length * image_width)
 
 
 

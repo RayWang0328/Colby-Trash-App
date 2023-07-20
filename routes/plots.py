@@ -8,19 +8,15 @@ matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
-from python.config import app
-import csv
+from python.config import application as app
+import python.config
 
 @app.route('/plotting', methods=['POST'])
 def plots():
 
-    with open('detections.csv', 'r') as read_file:
-        first_line = read_file.readline()
-
-    if not first_line:
+    df = python.config.csv_file
+    if df.empty:
         return jsonify({'message': 'Nothing in the file!'}), 400
-
-    df = pd.read_csv('detections.csv')
     num_clust = 3
   
     scaler = StandardScaler()

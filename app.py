@@ -1,6 +1,5 @@
-from flask import Flask, request, jsonify, render_template, send_file
+from flask import Flask, request, jsonify, render_template, send_file, Response
 from flask_socketio import SocketIO, emit
-import cv2
 import numpy as np
 import os
 from io import BytesIO
@@ -13,11 +12,12 @@ import supervision as sv
 import pandas as pd
 import base64
 import torch
+from io import StringIO
 from script import delete_big, delete_rock, delete_overlap, does_box1_cover_box2, delete_box, isolate, bb_intersection_over_union, get_lat_lon, get_geotagging, get_altitude, get_exif
 from routes.remove_overlap import remove_overlap
 from routes.mapping import mapping, show_map
 from routes.plots import plots 
-from python.config import app
+from python.config import application as app
 
 from GroundingDINO.groundingdino.util.inference import Model
 #from groundingdino.util.inference import Model
@@ -40,9 +40,15 @@ else:
 model = CLIPModel.from_pretrained("openai/clip-vit-large-patch14")
 processor = CLIPProcessor.from_pretrained("openai/clip-vit-large-patch14")
 
- 
 
 # app = Flask(__name__)
+try:
+    df = pd.read_csv('detections.csv')  
+except pd.errors.EmptyDataError:
+    df = pd.DataFrame()
+
+import python.config
+python.config.csv_file = df
 
 
 
@@ -92,7 +98,6 @@ def process_images():
   
     csv_file_path = 'detections.csv'
 
-
     if not os.path.exists(csv_file_path):
 
         # File does not exist, create it   
@@ -111,11 +116,17 @@ def process_images():
             writer = csv.writer(write_file)
             writer.writerow(column_titles)
 
+    try:
+        df = pd.read_csv('detections.csv')  
+    except pd.errors.EmptyDataError:
+        df = pd.DataFrame(column_titles)
+
+    python.config.csv_file = df
+    
+
     CLASSES = ['all trashes', 'rocks']
     BOX_TRESHOLD = 0.3
     TEXT_TRESHOLD = 0.25
-
-
 
     crops = []
     total = []
@@ -127,7 +138,7 @@ def process_images():
 
         image_name = secure_filename(file.filename)
         
-        df = pd.read_csv(csv_file_path)     
+           
         seen = df.isin([image_name]).any().any() 
 
         if seen == False:
@@ -192,12 +203,15 @@ def process_images():
 
                     custom_values = [str(detections.xyxy[i][0]), str(detections.xyxy[i][1]), str(detections.xyxy[i][2]), str(detections.xyxy[i][3]), lon, lat, alt, image_name, i, predicted_class]
 
+                    df.loc[len(df)] = custom_values  
+                
                     with open(csv_file_path, 'a', newline='') as file:
                         writer = csv.writer(file)
                         writer.writerow(custom_values)
+                    
 
                     total.append(custom_values)
-                    print(f'Row {custom_values} has been added to {csv_file_path}.')
+                    print(f'Row {custom_values} has been added.')
         else:
             im = Image.open(io.BytesIO(filestr))
             for index, row in df.iterrows():
@@ -211,7 +225,8 @@ def process_images():
                     crops.append(img_str)
                     total.append([str(row[0]),str(row[1]),str(row[2]),str(row[3]),str(row[4]),str(row[5]),str(row[6]), str(row[7]),str(row[8]),str(row[9])])
                
-
+    df.to_csv('detections.csv', index=False, mode='w') 
+    python.config.csv_file = df
 
     return jsonify({'predicted_classes': [row[-3:] for row in total], 'crops': crops}), 200
 
@@ -219,29 +234,65 @@ def process_images():
 @app.route('/clear_results')
 def clear_results():
   # Open detections.csv in write mode
+#  global csv_file
+  python.config.csv_file = pd.DataFrame()
+  
+  
   with open('detections.csv', 'w') as f:  
     pass # Truncate the file
-    
+ 
+
   return jsonify({'message': 'Results cleared'})
 
 @app.route('/get_results')
 def get_results():
+#  global csv_file
+  return python.config.csv_file.to_csv()
+
+
   with open('detections.csv') as f:
     return f.read()
   
 @app.route('/download_results')
 def download_results():
-    path_to_file = "../detections.csv"
-    return send_file(path_to_file, mimetype='text/csv', as_attachment=True)
+  #  global csv_file
+    str_io = StringIO()
+    python.config.csv_file.to_csv(str_io, index=False)
+    csv_data = str_io.getvalue()
+
+    # Create a Flask response with the CSV data and send it
+    response = Response(csv_data, mimetype='text/csv')
+    response.headers.set("Content-Disposition", "attachment", filename="detections.csv")
+    return response
+
+  #  path_to_file = "../detections.csv"
+   # return send_file(path_to_file, mimetype='text/csv', as_attachment=True)
 
 @app.route('/upload_csv', methods=['POST'])
 def upload_csv():
-  csv_file = request.files['csv']
+ # global csv_file
+  csv_f = request.files['csv']
+
+  python.config.csv_file = pd.read_csv(csv_f)
   
-  csv_file.save('detections.csv')
+  python.config.csv_file.to_csv('detections.csv', index=False, mode='w') 
   
   return jsonify({'message': 'CSV uploaded successfully'})
 
+@app.route('/update_class')
+def update_class():
+  index = request.args.get('index', type=int)
+  new_class = request.args.get('new_class')
+
+  df = python.config.csv_file
+  df.loc[index, 'type'] = new_class
+  python.config.csv_file = df
+  
+  # Update CSV file
+  df.to_csv('detections.csv', index=False)
+  
+  # Return updated row as a JSON
+  return jsonify(df.loc[index].to_dict()), 200
 
 
 

@@ -1,34 +1,33 @@
 from flask import redirect, render_template, url_for,request
 import pandas as pd
-from python.config import app
+from python.config import application as app
 import csv
 from pyproj import Transformer
 from script import calculate_GSD
 import statistics
 import folium
+import folium.raster_layers
+from folium.plugins import HeatMap, DualMap
+import python.config
+
+
 
 
 @app.route('/mapping', methods=['POST'])
-def mapping():
+def mapping(fast):
 
     boxes = []
     lats = []
     longs = []
     predictions = []
 
-    with open('detections.csv', 'r') as csv_file1:
-        # Create a CSV reader for both files
-        reader1 = csv.reader(csv_file1)
+    df = python.config.csv_file 
 
-        # Convert the readers to lists of rows
-        rows1 = list(reader1)[1:]
-
-        # Iterate over all pairs of rows
-        for row1 in rows1:
+    for index, row1 in df.iterrows():
 
             long, lat = float(row1[4]), float(row1[5])
             alt = float(row1[6])
-            gsd = calculate_GSD(alt)
+            gsd = calculate_GSD(alt, 13.2 ,8.8 , 5472)
             bbox_pixels = [float(row1[0]),float(row1[1]),float(row1[2]),float(row1[3])]
             predictions.append(row1[9])
 
@@ -59,6 +58,8 @@ def mapping():
             lats.append(br_lat)
             longs.append(br_lon)
             boxes.append(box1)
+
+      
     
 
 
@@ -75,41 +76,68 @@ def mapping():
     if len(longs) != 0:
         average_lat = statistics.mean(longs)
         average_long = statistics.mean(lats)
-        m = folium.Map(location=[average_lat, average_long], zoom_start=15, max_zoom = 40, tiles=tile)
+        m = folium.Map(location=[average_lat, average_long], zoom_start=15, max_zoom = 40)
+
     else: 
         m = folium.Map(zoom_start=15, max_zoom = 40, tiles=tile)
 
     
-
     
     tile.add_to(m)
 
   
 
-    
     for i, box1 in enumerate(boxes):
 
         if predictions[i] == "plastic": 
             color = '#dee619'
+            temp = 'Images/plastic.png'
         elif predictions[i] == "cage":
             color = '#D900EB'
+            temp = 'Images/cage.png'
         elif predictions[i] == "wood": 
             color = '#FC6F15'
+            temp = 'Images/wood.png'
         elif predictions[i] == "fishing gear":
-            color = '#e75480' # assumed color for wheel
+            color = '#e75480'
+            temp = 'Images/fishing_gear.png'
         elif predictions[i] == "nature":
             color = '#00FF00' 
+            temp = 'Images/nature.png'
         elif predictions[i] == "metal":
             color = '#46473E' 
+            temp = 'Images/metal.png'
         elif predictions[i] == "wheel":
             color = '#110C0A' 
+            temp = 'Images/wheel.png'
 
+        if fast == False: 
+            folium.raster_layers.ImageOverlay(
+                image = temp,
+                bounds = [[box1[0], box1[1]], [box1[2], box1[3]]],
+                overlay = False,
+                pixelated= False
+
+            ).add_to(m)
+            
+
+
+        '''
+        folium.Marker(
+            location=[(box1[0] + box1[2]) / 2, (box1[1]+ box1[3])/2],
+            icon = mark,
+            color=color,
+        ).add_to(m)
+        '''
         folium.Rectangle(
             bounds=[[box1[0], box1[1]], [box1[2], box1[3]]],
             color=color,
             fill=True,
             fill_color=color
         ).add_to(m)
+        
+
+
         
         
     # Color mapping for the legend
@@ -129,16 +157,30 @@ def mapping():
 
     m.get_root().html.add_child(folium.Element(legend_html))
 
+    global map
+
+    map = m.get_root().render()
     
-  
     return m.get_root().render()
    
    
+@app.route('/get_cur', methods=['GET'])
+def get_cur_map():
 
+  if type(map) == str:
+      return map
+  else: 
+      return mapping(fast = True)
+  
 
 @app.route('/show_map', methods=['GET'])
 def show_map():
+  f = mapping(fast = False)
+ 
+  return f
 
-  f = mapping()
-  
+@app.route('/fast_show_map', methods=['GET'])
+def faster_show_map():
+  f = mapping(fast = True)
+ 
   return f

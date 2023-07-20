@@ -5,8 +5,10 @@ from scipy.spatial import KDTree
 import numpy as np
 from werkzeug.utils import secure_filename
 from PIL import Image
-from python.config import app
+from python.config import application as app
 import io
+import python.config 
+
 
 
 def is_same_image( des0, des1):
@@ -53,10 +55,10 @@ def remove_overlap():
         return jsonify({'message': 'No file part in the request.'}), 400
     files = request.files.getlist('img_directory')
 
-    csv_file = 'detections.csv'
+    
 
-    # Load the CSV file
-    df = pd.read_csv(csv_file)
+    df = python.config.csv_file
+    print(df.shape)
 
     image_names = []
     image_numbers = []
@@ -78,16 +80,16 @@ def remove_overlap():
 
         for index, row in df.iterrows():
             if name in str(row['image_name']):
-                image_names.append(name)
-                image_numbers.append(row[8])
-                img_np = np.array(im.crop((row[0],row[1],row[2],row[3])))
-                image_crop.append(img_np)
-                kp, des = sift.detectAndCompute(img_np, None)
-                image_kp_and_des.append((kp, des))
-                longitudes.append(row[4])
-                latitudes.append(row[5])
+                if row[0] != "x1":
+                    image_names.append(name)
+                    image_numbers.append(row[8])
+                    img_np = np.array(im.crop((float(row[0]),float(row[1]),float(row[2]),float(row[3]))))
+                    image_crop.append(img_np)
+                    kp, des = sift.detectAndCompute(img_np, None)
+                    image_kp_and_des.append((kp, des))
+                    longitudes.append(row[4])
+                    latitudes.append(row[5])
 
-        
     # Build the K-D tree
     tree = KDTree(list(zip(longitudes, latitudes))) # assuming longitudes and latitudes are your lists
 
@@ -196,8 +198,6 @@ def remove_overlap():
 
     to_remove_tuples = [tuple(x.split('||')) for x in Overlapped]
 
-    # Load the csv file into a pandas DataFrame
-    df = pd.read_csv('detections.csv')
 
     # Define a function to check if a row should be removed
     def should_remove(row):
@@ -206,10 +206,13 @@ def remove_overlap():
     # Apply the function to every row in the DataFrame
     # The '~' operator inverts the boolean values, so we only keep rows where should_remove is False
     df = df[~df.apply(should_remove, axis=1)]
+    df = df.reset_index(drop=True)
+
 
     # Write the DataFrame back to the CSV
-    df.to_csv('detections.csv', index=False)
+    df.to_csv('detections.csv', index=False,mode = 'w')
 
+    python.config.csv_file = df
    
     return str("Deleted: " + str(Overlapped) + " from the csv")
             

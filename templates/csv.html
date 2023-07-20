@@ -19,6 +19,9 @@
   
   <!-- New download button -->
   <button id="download">Download CSV</button>
+
+  <input type="file" id="csv-upload">
+  <button id="upload-csv">Upload CSV</button>
   
   <table id="results"></table>
 
@@ -53,6 +56,28 @@
     // Event listener for the download button
     document.getElementById('download').addEventListener('click', () => {
       window.location.href = '/download_results';
+    });
+
+    const uploadButton = document.getElementById('upload-csv');
+
+    uploadButton.addEventListener('click', () => {
+
+      const csvFile = document.getElementById('csv-upload').files[0];
+
+      const formData = new FormData();
+      formData.append('csv', csvFile);
+
+      fetch('/upload_csv', {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => {
+          // Handle response
+        })
+        .catch(error => {
+          // Handle error
+        });
+
     });
 
   </script>

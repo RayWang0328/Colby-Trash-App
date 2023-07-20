@@ -48,15 +48,13 @@
 
   <div style="margin: 10px 0;"></div>
 
-  <input type="file" id="csv-upload">
-  <button id="upload-csv">Upload CSV</button>
-  
   <!-- Add the loader here -->
   <div class="loader" id="loader"></div>
   <!-- Add status text here -->
   <div id="loading-status"></div>
 
   <div id="results"></div>
+
 
   <script>
     const submitButton = document.getElementById('submit-button');
@@ -94,16 +92,53 @@
 
           data.predicted_classes.forEach((row, i) => {
             const div = document.createElement('div');
+            div.style.display = 'flex'; // Set div as a flex container
+            div.style.alignItems = 'center'; // Vertically center the contents
+            div.style.marginBottom = '10px'; // Add space between divs
 
             const img = document.createElement('img');
             img.src = 'data:image/jpg;base64,' + data.crops[i];
             img.width = 100;
+            img.style.marginRight = '10px'; // Add space to the right of the image
 
             const p = document.createElement('p');
-            p.textContent = row;
+            p.textContent = row[0] + ', ' + row[1] + ', ' + row[2];
+            p.style.marginRight = '10px'; // Add space to the right of the paragraph
 
+            const actionDiv = document.createElement('div');
+            actionDiv.style.display = 'flex'; // Set actionDiv as a flex container
+            actionDiv.style.justifyContent = 'center'; // Horizontally center the contents
+
+            const select = document.createElement('select');
+            select.style.marginRight = '10px'; // Add space to the right of the select
+            const classes = ['plastic', 'cage', 'wood', 'fishing gear', 'nature', 'metal', 'wheel']; // List of classes
+            classes.forEach((cls) => {
+              const option = document.createElement('option');
+              option.text = cls;
+              option.value = cls;
+              if (cls === row[2]) { option.selected = true; }
+              select.appendChild(option);
+            });
+
+            const button = document.createElement('button');
+            button.textContent = 'Finalize Changes';
+            button.addEventListener('click', () => {
+              fetch(`/update_class?index=${i}&new_class=${select.value}`)
+                .then(response => response.json())
+                .then(data => {
+                  // Do something with the data
+                  console.log(data);
+                })
+            });
+
+            // Add the select and button to the actionDiv
+            actionDiv.appendChild(select);
+            actionDiv.appendChild(button);
+
+            // Add the elements to the div
             div.appendChild(p);
             div.appendChild(img);
+            div.appendChild(actionDiv);
 
             resultsDiv.appendChild(div);
 
@@ -120,34 +155,15 @@
         });
     });
 
+
+
+
     const clearButton = document.getElementById('clear-button');
 
     // Add click handler
     clearButton.addEventListener('click', () => {
 
       fetch('/clear_results')
-        .then(response => {
-          // Handle response
-        })
-        .catch(error => {
-          // Handle error
-        });
-
-    });
-
-    const uploadButton = document.getElementById('upload-csv');
-
-    uploadButton.addEventListener('click', () => {
-
-      const csvFile = document.getElementById('csv-upload').files[0];
-
-      const formData = new FormData();
-      formData.append('csv', csvFile);
-
-      fetch('/upload_csv', {
-        method: 'POST',
-        body: formData
-      })
         .then(response => {
           // Handle response
         })

@@ -1,50 +1,83 @@
-    <!DOCTYPE html>
-    <html>
+<!DOCTYPE html>
+<html>
 
-    <head>
-        <title>Map Display</title>
-        <style>
-            #map {
-                height: 80vh;
-                width: 100%;
-                margin: 0 auto;
-                margin-top: 10;
-                display: block;
-            }
-            .reload {
-                margin-bottom: 10px;
-            }
-        </style>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    </head>
+<head>
+    <title>Map Display</title>
+    <style>
+        #map {
+            height: 80vh;
+            width: 100%;
+            margin: 0 auto;
+            margin-top: 10;
+            display: block;
+        }
+        .reload {
+            margin-bottom: 10px;
+        }
+        .loader {
+            border: 16px solid #f3f3f3;
+            /* Light grey */
+            border-top: 16px solid #3498db;
+            /* Blue */
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+            display: none;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            /* Hidden by default */
+        }
 
-    <body>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/csv/">CSV</a>
-            <a href="/overlap/">Overlap</a>
-            <a href="/map/">Map</a>
-            <a href="/plots/">Plot</a>
-        </nav>
-        <h1>Display Map</h1>
-        
-        <button id="reload">Reload Map</button>
-        <iframe id="map" src="/show_map"></iframe>
+        @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
 
-        
+        100% {
+            transform: rotate(360deg);
+        }
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
 
-        <script>
-        
-            document.getElementById('reload').addEventListener('click', function() {
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/csv/">CSV</a>
+        <a href="/overlap/">Overlap</a>
+        <a href="/map/">Map</a>
+        <a href="/plots/">Plot</a>
+    </nav>
+    <h1>Display Map</h1>
+    <div class="loader" id="loader"></div>
+    <button id="reload">Reload Map</button>
+    <button id="fast_reload">Faster Reload</button>
 
-            // existing code
-            var map = document.getElementById('map');
+    <iframe id="map" src="/get_cur"></iframe>
+
+    <script>
+        const loader = document.getElementById('loader');
+        var map = document.getElementById('map');
+
+        map.onload = function() {
+            loader.style.display = 'none';
+        };
+
+        document.getElementById('reload').addEventListener('click', function() {
+            loader.style.display = 'block';
             var timestamp = new Date().getTime();
-            map.src = "/show_map?t=" + timestamp; 
-            document.getElementById('map').contentWindow.location.reload();
-            });
-        
-        </script>
-    </body>
+            map.src = "/show_map?t=" + timestamp;
+        });
 
-    </html>
+        document.getElementById('fast_reload').addEventListener('click', function() {
+            loader.style.display = 'block';
+            var timestamp = new Date().getTime();
+            map.src = "/fast_show_map?t=" + timestamp;
+        });
+
+    </script>
+</body>
+
+</html>

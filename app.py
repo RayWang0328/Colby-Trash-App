@@ -40,7 +40,7 @@ else:
 model = CLIPModel.from_pretrained("openai/clip-vit-large-patch14")
 processor = CLIPProcessor.from_pretrained("openai/clip-vit-large-patch14")
 
-
+ 
 
 # app = Flask(__name__)
 
@@ -81,6 +81,7 @@ def maps():
 @app.route('/plots/')
 def plot():
     return render_template('plots.html')
+
 
 @app.route('/process_images', methods=['POST'])
 def process_images():
@@ -240,6 +241,9 @@ def upload_csv():
   csv_file.save('detections.csv')
   
   return jsonify({'message': 'CSV uploaded successfully'})
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=False)

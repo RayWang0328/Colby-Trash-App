@@ -1,10 +1,12 @@
-from flask import redirect, render_template, url_for
+from flask import redirect, render_template, url_for,request
+import pandas as pd
 from python.config import app
 import csv
 from pyproj import Transformer
 from script import calculate_GSD
 import statistics
 import folium
+
 
 @app.route('/mapping', methods=['POST'])
 def mapping():
@@ -13,7 +15,7 @@ def mapping():
     lats = []
     longs = []
     predictions = []
-    # Open both CSV files
+
     with open('detections.csv', 'r') as csv_file1:
         # Create a CSV reader for both files
         reader1 = csv.reader(csv_file1)
@@ -57,6 +59,8 @@ def mapping():
             lats.append(br_lat)
             longs.append(br_lon)
             boxes.append(box1)
+    
+
 
 
     tile = folium.TileLayer(
@@ -75,7 +79,6 @@ def mapping():
     else: 
         m = folium.Map(zoom_start=15, max_zoom = 40, tiles=tile)
 
-    
     
 
     
@@ -126,9 +129,9 @@ def mapping():
 
     m.get_root().html.add_child(folium.Element(legend_html))
 
-    # Save map to a HTML file
-    m.save('templates/hal.html')
-    m.save('hal.html')
+    
+  
+    return m.get_root().render()
    
    
 
@@ -136,6 +139,6 @@ def mapping():
 @app.route('/show_map', methods=['GET'])
 def show_map():
 
-  mapping()
+  f = mapping()
   
-  return render_template("hal.html")
+  return f

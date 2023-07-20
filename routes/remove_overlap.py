@@ -54,7 +54,6 @@ def remove_overlap():
     files = request.files.getlist('img_directory')
 
     csv_file = 'detections.csv'
-    image_dir = files
 
     # Load the CSV file
     df = pd.read_csv(csv_file)

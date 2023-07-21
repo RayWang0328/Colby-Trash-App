@@ -13,16 +13,16 @@ import python.config
 
 @app.route('/plotting', methods=['POST'])
 def plots():
-
+    data = request.get_json()
+    num_clusters = int(data['num_clusters'])
     df = python.config.csv_file
     if df.empty:
         return jsonify({'message': 'Nothing in the file!'}), 400
-    num_clust = 3
-  
+
     scaler = StandardScaler()
     df[['longitude', 'latitude']] = scaler.fit_transform(df[['longitude', 'latitude']])
 
-    kmeans = KMeans(n_clusters=num_clust, random_state=0)
+    kmeans = KMeans(n_clusters=num_clusters, random_state=0)
     df['cluster'] = kmeans.fit_predict(df[['longitude', 'latitude']])
 
     item_types = df['type'].unique()
@@ -31,7 +31,7 @@ def plots():
 
     images = []
 
-    for i in range(num_clust):
+    for i in range(num_clusters):
        # plt.figure(figsize=(10, 5))
         sns.countplot(x='type', data=df[df['cluster']==i], palette=color_dict)
         plt.title(f'Frequency Plot for Cluster {i+1}')

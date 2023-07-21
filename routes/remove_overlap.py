@@ -58,7 +58,6 @@ def remove_overlap():
     
 
     df = python.config.csv_file
-    print(df.shape)
 
     image_names = []
     image_numbers = []
@@ -214,7 +213,7 @@ def remove_overlap():
 
     python.config.csv_file = df
    
-    return str("Deleted: " + str(Overlapped) + " from the csv")
+    return str("Deleted: " + str(len(Overlapped)) + " item(s) from the csv. Specific Images: " + str(Overlapped))
             
     
 

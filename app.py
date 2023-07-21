@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify, render_template, send_file, Response
-from flask_socketio import SocketIO, emit
 import numpy as np
 import os
 from io import BytesIO
@@ -20,7 +19,7 @@ from routes.plots import plots
 from python.config import application as app
 
 from GroundingDINO.groundingdino.util.inference import Model
-#from groundingdino.util.inference import Model
+
 
 current_dir = os.getcwd()  
 from GroundingDINO.groundingdino.util.inference import load_model, load_image, predict, annotate
@@ -265,8 +264,16 @@ def download_results():
     response.headers.set("Content-Disposition", "attachment", filename="detections.csv")
     return response
 
-  #  path_to_file = "../detections.csv"
-   # return send_file(path_to_file, mimetype='text/csv', as_attachment=True)
+@app.route('/download_map')
+def download_map():
+    html_map_str = python.config.map
+
+    response = Response(html_map_str, mimetype='text/html')
+
+    # Set Content-Disposition header
+    response.headers["Content-Disposition"] = "attachment; filename=map.html"
+
+    return response
 
 @app.route('/upload_csv', methods=['POST'])
 def upload_csv():
@@ -285,19 +292,25 @@ def update_class():
   new_class = request.args.get('new_class')
 
   df = python.config.csv_file
-  df.loc[index, 'type'] = new_class
+  if new_class == "repeated trash":
+    df = df.drop(index)
+  else:
+    df.loc[index, 'type'] = new_class
   python.config.csv_file = df
   
   # Update CSV file
   df.to_csv('detections.csv', index=False)
   
   # Return updated row as a JSON
-  return jsonify(df.loc[index].to_dict()), 200
+  if new_class == "repeated trash":
+    return jsonify({"message": "Row deleted"}), 200
+  else:
+    # Return updated row as a JSON
+    return jsonify(df.loc[index].to_dict()), 200
 
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
- #   from waitress import serve
-  #  serve(app, host="0.0.0.0", port=8000)
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=8000)
 

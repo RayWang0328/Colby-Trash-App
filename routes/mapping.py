@@ -7,7 +7,6 @@ from script import calculate_GSD
 import statistics
 import folium
 import folium.raster_layers
-from folium.plugins import HeatMap, DualMap
 import python.config
 
 
@@ -160,6 +159,8 @@ def mapping(fast):
     global map
 
     map = m.get_root().render()
+
+    python.config.map = map
     
     return m.get_root().render()
    

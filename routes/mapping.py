@@ -171,7 +171,7 @@ def get_cur_map():
   if type(map) == str:
       return map
   else: 
-      return mapping(fast = True)
+      return mapping(fast = False)
   
 
 @app.route('/show_map', methods=['GET'])

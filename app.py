@@ -87,6 +87,10 @@ def maps():
 def plot():
     return render_template('plots.html')
 
+@app.route('/about/')
+def about():
+    return render_template('about.html')
+
 
 @app.route('/process_images', methods=['POST'])
 def process_images():

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Remove Overlap</title>
+    <title>About</title>
     <style>
       header h1 {
-        animation: slideDown 1s ease-out forwards;
+        animation: slideDown 1s ease-out forwards; 
         font-size: 65px;
         font-weight: 600;
-        background-image: conic-gradient(#00c2cb, #ee4b2b, #886dd2);
+        background-image: conic-gradient(#f1eef0, #928c8c, #f0ecec);
         color: transparent;
         background-clip: text;
         -webkit-background-clip: text;
@@ -85,73 +85,7 @@
         }
       }
 
-      .loader {
-        border: 16px solid #f3f3f3;
-        /* Light grey */
-        border-top: 16px solid #3498db;
-        /* Blue */
-        border-radius: 50%;
-        width: 120px;
-        height: 120px;
-        animation: spin 2s linear infinite;
-        display: none;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 20px;
-        margin-bottom: 10px;
-        /* Hidden by default */
-      }
 
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-
-      .customfile {
-        animation: slideDown 1s ease-out forwards;
-        border: 2px solid rgb(76, 215, 234);
-        border-radius: 50px;
-        padding: 2px;
-        font-size: 20px;
-        /* font-size was incorrect previously */
-        background-image: radial-gradient(circle, #553c9a, #ee4b2b);
-        font-family: "sans-serif";
-        margin: auto;
-        /* auto margins are applied */
-        display: block;
-        max-width: max-content;
-        /* set to block for auto margins to work */
-      }
-
-      .customfile::-webkit-file-upload-button {
-        font-family: "sans-serif";
-        background-color: rgb(227, 221, 221);
-        color: #ffffff;
-        padding: 5px 16px;
-        border: none;
-        border-radius: 50px;
-        cursor: pointer;
-        color: black;
-      }
-
-      #submitBtn {
-        animation: slideDown 1s ease-out forwards;
-        margin: auto;
-        /* auto margins are applied */
-        display: block;
-        margin-top: 10px;
-        margin-bottom: 30px;
-        height: 2rem;
-      }
-
-      #results {
-        margin: auto;
-      }
       @keyframes slideDown {
         0% {
           transform: translateY(-100%);
@@ -161,7 +95,6 @@
         }
       }
 
-     
     </style>
   </head>
 
@@ -175,43 +108,10 @@
       <a class="button-36" href="/about/">About</a>
     </nav>
     <header>
-      <h1>Remove Overlapping Images</h1>
+      <h1>About</h1>
     </header>
 
-    <input class="customfile" type="file" id="fileInput" multiple />
-    <button class="button-36" id="submitBtn">Submit Images</button>
-    <div class="loader" id="loader"></div>
-    <table id="results"></table>
 
-    <script>
-      const submitBtn = document.getElementById("submitBtn");
-      const fileInput = document.getElementById("fileInput");
-      const resultsTable = document.getElementById("results");
-      const loader = document.getElementById("loader");
 
-      submitBtn.addEventListener("click", () => {
-        const files = fileInput.files;
-
-        loader.style.display = "block";
-
-        // Create a FormData object and append the files
-        const formData = new FormData();
-        for (let i = 0; i < files.length; i++) {
-          formData.append("img_directory", files[i]);
-        }
-
-        // Send POST request to the Python backend
-        fetch("/remove_overlap", {
-          method: "POST",
-          body: formData,
-        })
-          .then((response) => response.text())
-          .then((data) => {
-            loader.style.display = "none";
-            resultsTable.style.border = "1px solid";
-            resultsTable.innerHTML = `<tr><td>${data}</td></tr>`;
-          });
-      });
-    </script>
   </body>
 </html>

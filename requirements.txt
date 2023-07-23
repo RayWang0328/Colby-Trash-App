@@ -13,7 +13,6 @@ piexif
 requests
 Flask-SocketIO
 pandas
-scripy
 pyproj
 folium
 scikit-learn

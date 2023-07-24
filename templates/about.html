@@ -70,6 +70,12 @@
       align-items: center;
       justify-content: center;
       text-decoration: none;
+      transform: scale(1);
+      transition: transform 0.1s ease;
+    }
+    .button-36:active {
+      transform: scale(0.9);
+    
     }
 
     .button-36:hover {
@@ -171,10 +177,9 @@
     <p>We thank you for utilizing our Trash Annotation Application! Below is a video tutorial that might help!</p>
   </div>
   <div class="video-container">
-    <video width="70%"  controls>
-      <source src="../Images/Tutorial.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
+    <iframe width="80%" height="650" controls
+      src="https://www.youtube.com/embed/D_hD4nMwO6U">
+    </iframe>
   </div>
 
 </body>

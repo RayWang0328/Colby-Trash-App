@@ -8,7 +8,7 @@
       animation: slideDown 1s ease-out forwards;
       font-size: 65px;
       font-weight: 600;
-      background-image: conic-gradient(#00c2cb, #ee4b2b, #886dd2);
+      background-image: conic-gradient(#f69115, #e7a829, #ffb508);
       color: transparent;
       background-clip: text;
       -webkit-background-clip: text;
@@ -70,7 +70,13 @@
       align-items: center;
       justify-content: center;
       text-decoration: none;
+      transform: scale(1);
+      transition: transform 0.1s ease;
     }
+    .button-36:active {
+      transform: scale(0.9);
+    }
+    
 
     .button-36:hover {
       box-shadow: rgba(80, 63, 205, 0.5) 0 1px 30px;

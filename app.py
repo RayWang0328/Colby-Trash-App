@@ -214,7 +214,7 @@ def process_images():
                     
 
                     total.append(custom_values)
-                    print(f'Row {custom_values} has been added.')
+            
         else:
             im = Image.open(io.BytesIO(filestr))
             for index, row in df.iterrows():

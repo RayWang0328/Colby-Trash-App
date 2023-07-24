@@ -309,7 +309,7 @@
               const button = document.createElement("button");
               button.className = "button-36";
               button.id = "finalize";
-              button.textContent = "Finalize";
+              button.textContent = "Revise";
               button.addEventListener("click", () => {
                 fetch(`/update_class?index=${i}&new_class=${select.value}`)
                   .then((response) => response.json())

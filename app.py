@@ -10,6 +10,7 @@ from transformers import CLIPProcessor, CLIPModel
 import supervision as sv
 import pandas as pd
 import base64
+import math
 import torch
 from io import StringIO
 from script import delete_big, delete_rock, delete_overlap, does_box1_cover_box2, delete_box, isolate, bb_intersection_over_union, get_lat_lon, get_geotagging, get_altitude, get_exif
@@ -188,9 +189,8 @@ def process_images():
             lon, lat = get_lat_lon(get_exif(file))
             alt = get_altitude(file)
 
-            
 
-            if detections.xyxy is not None:
+            if len(detections.xyxy) != 0:
                 for i in range(len(detections.xyxy)):
                     im = Image.fromarray(np.uint8(im)).convert('RGB')
                     img_np = np.array(im.crop(detections.xyxy[i]))
@@ -211,14 +211,23 @@ def process_images():
                     with open(csv_file_path, 'a', newline='') as file:
                         writer = csv.writer(file)
                         writer.writerow(custom_values)
-                    
 
                     total.append(custom_values)
+            else: 
+                custom_values = ["NA", "NA", "NA","NA", lon, lat, alt, image_name, "NA", "NA"]
+                df.loc[len(df)] = custom_values
+                with open(csv_file_path, 'a', newline='') as file:
+                    writer = csv.writer(file)
+                    writer.writerow(custom_values)
+
+
             
         else:
             im = Image.open(io.BytesIO(filestr))
             for index, row in df.iterrows():
                 if image_name in str(row['image_name']):
+                    if math.isnan(row[0]):
+                       break
                     img_np = np.array(im.crop((row[0],row[1],row[2],row[3])))
                     output_image = Image.fromarray(img_np.astype('uint8'))
                     buffered = BytesIO()

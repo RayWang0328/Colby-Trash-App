@@ -19,6 +19,8 @@ def plots():
     df = python.config.csv_file
     if df.empty:
         return jsonify({'message': 'Nothing in the file!'}), 400
+    
+    df = df.dropna()
 
     scaler = StandardScaler()
     df[['longitude', 'latitude']] = scaler.fit_transform(df[['longitude', 'latitude']])

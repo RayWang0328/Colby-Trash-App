@@ -26,6 +26,7 @@ def mapping(fast,skip=False):
             return python.config.map.get_root().render()
 
     df = python.config.csv_file 
+    df = df.dropna()
 
     for index, row1 in df.iterrows():
 

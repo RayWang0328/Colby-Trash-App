@@ -8,6 +8,7 @@ from PIL import Image
 from python.config import application as app
 import io
 import python.config 
+import math
 
 
 
@@ -58,6 +59,7 @@ def remove_overlap():
     
 
     df = python.config.csv_file
+    df = df.dropna()
 
     image_names = []
     image_numbers = []

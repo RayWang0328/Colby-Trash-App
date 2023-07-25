@@ -13,14 +13,20 @@ import python.config
 
 
 @app.route('/mapping', methods=['POST'])
-def mapping(fast):
+def mapping(fast,skip=False):
 
     boxes = []
     lats = []
     longs = []
     predictions = []
 
+    if skip == False:
+        if python.config.map != '':
+        
+            return python.config.map.get_root().render()
+
     df = python.config.csv_file 
+    df = df.dropna()
 
     for index, row1 in df.iterrows():
 
@@ -155,12 +161,8 @@ def mapping(fast):
     legend_html += '</div>'
 
     m.get_root().html.add_child(folium.Element(legend_html))
+    python.config.map = m 
 
-    global map
-
-    map = m.get_root().render()
-
-    python.config.map = map
     
     return m.get_root().render()
    
@@ -168,20 +170,20 @@ def mapping(fast):
 @app.route('/get_cur', methods=['GET'])
 def get_cur_map():
 
-  if type(map) == str:
-      return map
+  if python.config.map != '':
+      return python.config.map.get_root().render()
   else: 
-      return mapping(fast = False)
+      return mapping(fast = False, skip = True)
   
 
 @app.route('/show_map', methods=['GET'])
 def show_map():
-  f = mapping(fast = False)
+  f = mapping(fast = False, skip = True)
  
   return f
 
 @app.route('/fast_show_map', methods=['GET'])
 def faster_show_map():
-  f = mapping(fast = True)
+  f = mapping(fast = True, skip = True)
  
   return f

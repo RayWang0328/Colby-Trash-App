@@ -5,7 +5,7 @@
   <title>Trash Annotation App</title>
   <style>
     #submit-button {
-      animation: slideDown 1s ease-out forwards;
+     
       margin: auto;
       /* auto margins are applied */
       display: block;
@@ -15,7 +15,7 @@
     }
 
     .customfile {
-      animation: slideDown 1s ease-out forwards;
+    
       border: 2px solid rgb(76, 215, 234);
       border-radius: 50px;
       padding: 2px;
@@ -57,7 +57,7 @@
     }
 
     header h1 {
-      animation: slideDown 1s ease-out forwards;
+   
       font-size: 65px;
       font-weight: 600;
       background-image: conic-gradient(#c7ed3d 0%,
@@ -73,7 +73,7 @@
     }
 
     .buttons-container {
-      animation: slideDown 1s ease-out forwards;
+     
       display: flex;
       justify-content: center;
       gap: 20px;
@@ -309,7 +309,7 @@
               const button = document.createElement("button");
               button.className = "button-36";
               button.id = "finalize";
-              button.textContent = "Finalize";
+              button.textContent = "Revise";
               button.addEventListener("click", () => {
                 fetch(`/update_class?index=${i}&new_class=${select.value}`)
                   .then((response) => response.json())

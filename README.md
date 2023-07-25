@@ -85,7 +85,8 @@ If you want to shut it down, changed Enabled from `True` to `False`.
 
 ## Demo 
 
-https://github.com/RayWang0328/Colby-Trash-App/assets/19866871/6d42b98c-4db3-45a1-b589-4346716b5be1
+https://github.com/RayWang0328/Colby-Trash-App/assets/19866871/f9c72a17-f664-4ac9-9043-45be41a96a5e
+
 
 
 

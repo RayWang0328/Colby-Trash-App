@@ -17,7 +17,7 @@ If you do have a CUDA compatible GPU, make sure its activated by running this af
 
 If CUDA is properly set up, the above should print `True`
 
-### 1. Clone Repository onto a folder local machine:
+### 1. Clone Repository onto a folder local machine: Open Terminal on your machine
 ```
 git clone https://github.com/RayWang0328/Colby-Trash-App.git
 ```
@@ -35,7 +35,7 @@ py -3 -m venv .venv
 
 ```
 cd Colby-Trash-App
-python3 -m venv env
+python3 -m venv .venv
 . .venv/bin/activate
 ```
 
@@ -48,6 +48,9 @@ python -m pip install scipy
 ```
 ### 4. Install GroundingDINO libraries
 ```
+git clone https://github.com/IDEA-Research/GroundingDINO.git
+```
+```
 cd GroundingDINO/
 ```
 Install dependencies:
@@ -56,6 +59,8 @@ pip install -e .
 cd ..
 ```
 ### 5. Download GroundingDINO weights
+
+For this step, you will need to have wget installed.
 ```
 mkdir weights
 cd weights

@@ -8,7 +8,7 @@ Marine debris presents substantial ecological challenge to the ecosystem of Main
 ### 0. CPU or GPU
 It is advisable to run this program on your local machine only if you have a GPU that is CUDA compatible. The reason for this is because the models used in this app are pretty heavy, computationally. 
 
-If you do have a CUDA compatible GPU, mnake sure its activated by running this after installing everything below:
+If you do have a CUDA compatible GPU, make sure its activated by running this after installing everything below:
 ```python
 >>> python
 >>> import torch
@@ -71,7 +71,7 @@ Go to http://localhost:8000/ to see web app working
     
 ## Deployment
 
-Alternatively, the app can be deployed as a web app. This will cost money, but it can be accessed anywhere. 
+Alternatively, the app can be deployed as a web app. This will cost money (0.51$/hr), but it can be accessed anywhere. 
 
 Docker Image: 🐋
 ```javascript

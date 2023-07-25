@@ -78,7 +78,9 @@ Docker Image: 🐋
   rayw03/trash-app
 ```
 
+## Demo 
+
+https://github.com/RayWang0328/Colby-Trash-App/assets/19866871/6d42b98c-4db3-45a1-b589-4346716b5be1
 
 
-https://github.com/RayWang0328/Colby-Trash-App/assets/19866871/796856d4-3f3b-4852-aef1-9c31aacbb6ef
 

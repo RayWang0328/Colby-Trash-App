@@ -1,5 +1,5 @@
 
-# Colby Trash Deletion App
+# Colby Trash Deletion App 🗑️ 
 
 Marine debris presents substantial ecological challenge to the ecosystem of Maine's islands where volunteer groups annually undertake cleanup initiatives on islands. These cleanup efforts hindered by unpredictable challenges in trash volume and placement. In this web app, we created a pipeline that leverages aerial drones and machine learning to automatically detect, classify, and map marine trash. 
 
@@ -8,7 +8,7 @@ Marine debris presents substantial ecological challenge to the ecosystem of Main
 ### 0. CPU or GPU
 It is advisable to run this program on your local machine only if you have a GPU that is CUDA compatible. The reason for this is because the models used in this app are pretty heavy, computationally. 
 
-If you do have a CUDA compatible GPU, mnake sure its activated by running this after installing everything below:
+If you do have a CUDA compatible GPU, make sure its activated by running this after installing everything below:
 ```python
 >>> python
 >>> import torch
@@ -71,10 +71,22 @@ Go to http://localhost:8000/ to see web app working
     
 ## Deployment
 
-Alternatively, the app can be deployed as a web app on a website. This will cost money, but it can be accessed anywhere. 
+Alternatively, the app can be deployed as a web app. This will cost money (0.51$/hr), but it can be accessed anywhere. 
 
 Docker Image: 🐋
 ```javascript
   rayw03/trash-app
 ```
+This is easily achieved through [Paperspace](https://www.paperspace.com). Make an account, create a project, then create a Deployment. 
+
+In the deployment menu, select one of the GPUs as your machine type. Have Image be `rayw03/trash-app` and port be `8000`. Click `Deploy` and you're done! 
+
+If you want to shut it down, changed Enabled from `True` to `False`.  
+
+## Demo 
+
+https://github.com/RayWang0328/Colby-Trash-App/assets/19866871/f9c72a17-f664-4ac9-9043-45be41a96a5e
+
+
+
 

@@ -1,5 +1,5 @@
 
-# Colby Trash Deletion App
+# Colby Trash Deletion App 🗑️ 
 
 Marine debris presents substantial ecological challenge to the ecosystem of Maine's islands where volunteer groups annually undertake cleanup initiatives on islands. These cleanup efforts hindered by unpredictable challenges in trash volume and placement. In this web app, we created a pipeline that leverages aerial drones and machine learning to automatically detect, classify, and map marine trash. 
 
@@ -71,12 +71,17 @@ Go to http://localhost:8000/ to see web app working
     
 ## Deployment
 
-Alternatively, the app can be deployed as a web app on a website. This will cost money, but it can be accessed anywhere. 
+Alternatively, the app can be deployed as a web app. This will cost money, but it can be accessed anywhere. 
 
 Docker Image: 🐋
 ```javascript
   rayw03/trash-app
 ```
+This is easily achieved through [Paperspace](https://www.paperspace.com). Make an account, create a project, then create a Deployment. 
+
+In the deployment menu, select one of the GPUs as your machine type. Have Image be `rayw03/trash-app` and port be `8000`. Click `Deploy` and you're done! 
+
+If you want to shut it down, changed Enabled from `True` to `False`.  
 
 ## Demo 
 

@@ -48,6 +48,9 @@ python -m pip install scipy
 ```
 ### 4. Install GroundingDINO libraries
 ```
+git clone https://github.com/IDEA-Research/GroundingDINO.git
+```
+```
 cd GroundingDINO/
 ```
 Install dependencies:

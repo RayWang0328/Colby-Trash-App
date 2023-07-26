@@ -2,7 +2,8 @@
 # Colby Trash Deletion App 🗑️ 
 
 Marine debris presents substantial ecological challenge to the ecosystem of Maine's islands where volunteer groups annually undertake cleanup initiatives on islands. These cleanup efforts hindered by unpredictable challenges in trash volume and placement. In this web app, we created a pipeline that leverages aerial drones and machine learning to automatically detect, classify, and map marine trash. 
-
+## Paper 📄
+Still working on it ⚙️
 ## Local Instillation 🛠️ 
 
 ### 0. CPU or GPU

@@ -86,7 +86,7 @@ This is easily achieved through [Paperspace](https://www.paperspace.com). Make a
 
 In the deployment menu, select one of the GPUs as your machine type. Have Image be `rayw03/trash-app` and port be `8000`. Click `Deploy` and you're done! 
 
-If you want to shut it down, changed Enabled from `True` to `False`.  
+If you want to shut it down, change Enabled from `True` to `False`.  
 
 ## Demo 
 

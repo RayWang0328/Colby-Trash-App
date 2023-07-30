@@ -4,6 +4,13 @@
 Marine debris presents substantial ecological challenge to the ecosystem of Maine's islands where volunteer groups annually undertake cleanup initiatives on islands. These cleanup efforts hindered by unpredictable challenges in trash volume and placement. In this web app, we created a pipeline that leverages aerial drones and machine learning to automatically detect, classify, and map marine trash. 
 ## Paper 📄
 Still working on it ⚙️
+
+[Link to Presentation](https://docs.google.com/presentation/d/1rI7PSf180x29OTPDD2gRQmT9HyvPoCecKxQgDgZoxtc/edit?usp=sharing)
+
+## Demo 
+
+https://github.com/RayWang0328/Colby-Trash-App/assets/19866871/f9c72a17-f664-4ac9-9043-45be41a96a5e
+
 ## Local Instillation 🛠️ 
 
 ### 0. CPU or GPU
@@ -89,9 +96,6 @@ In the deployment menu, select one of the GPUs as your machine type. Have Image 
 
 If you want to shut it down, change Enabled from `True` to `False`.  
 
-## Demo 
-
-https://github.com/RayWang0328/Colby-Trash-App/assets/19866871/f9c72a17-f664-4ac9-9043-45be41a96a5e
 
 
 

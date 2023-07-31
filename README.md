@@ -5,10 +5,10 @@ Marine debris presents substantial ecological challenge to the ecosystem of Main
 
 ## Project overview 🔎
 * 🗃️ Dataset: Drone footage from Tim Stonesifer & Dr. Whitney King
-* 🕵🏻 Trash Detection: [Grounding DINO] (https://github.com/IDEA-Research/GroundingDINO)
-* 🖐 Trash Classification: [OpenAI CLIP] (https://github.com/openai/CLIP)
-* 🚮 Remove Duplicate Trash: [SIFT] (https://docs.opencv.org/4.x/da/df5/tutorial_py_sift_intro.html)
-* 🗺️ Trash Visualization: [Folium Library] (https://python-visualization.github.io/folium/)
+* 🕵🏻 Trash Detection: [Grounding DINO](https://github.com/IDEA-Research/GroundingDINO)
+* 🖐 Trash Classification: [OpenAI CLIP](https://github.com/openai/CLIP)
+* 🚮 Remove Duplicate Trash: [SIFT](https://docs.opencv.org/4.x/da/df5/tutorial_py_sift_intro.html)
+* 🗺️ Trash Visualization: [Folium Library](https://python-visualization.github.io/folium/)
 * 🌐 Web App: HTML, CSS, Javascript, Flask 
 
 For more information, refer to [Presentation](https://docs.google.com/presentation/d/1rI7PSf180x29OTPDD2gRQmT9HyvPoCecKxQgDgZoxtc/edit?usp=sharing). Paper is coming soon! 

@@ -279,7 +279,7 @@ def download_results():
 
 @app.route('/download_map')
 def download_map():
-    html_map_str = python.config.map
+    html_map_str = python.config.map.get_root().render()
 
     response = Response(html_map_str, mimetype='text/html')
 

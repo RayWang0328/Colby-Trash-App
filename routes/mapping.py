@@ -1,3 +1,6 @@
+# This script was written by Ray Wang
+# raywang0328@gmail.com
+
 from flask import redirect, render_template, url_for,request
 import pandas as pd
 from python.config import application as app

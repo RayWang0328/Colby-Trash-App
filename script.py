@@ -1,3 +1,6 @@
+# This script was written by Ray Wang
+# raywang0328@gmail.com
+
 import numpy as np
 import supervision as sv
 from PIL import Image

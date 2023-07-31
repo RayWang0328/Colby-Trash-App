@@ -1,3 +1,6 @@
+# This script was written by Ray Wang
+# raywang0328@gmail.com
+
 from flask import Flask, request, jsonify, render_template, send_file, Response
 import numpy as np
 import os

@@ -36,6 +36,8 @@ If you do have a CUDA compatible GPU, make sure its activated by running this af
 
 If CUDA is properly set up, the above should print `True`
 
+If you receive a `NameError: name '_C' is not defined` error, refer to this [support ticket](https://github.com/IDEA-Research/GroundingDINO/issues/8#issuecomment-1541892708). 
+
 ### 1. Clone Repository onto a folder local machine: Open Terminal on your machine
 ```
 git clone https://github.com/RayWang0328/Colby-Trash-App.git

@@ -47,23 +47,23 @@ def plots():
         image = base64.b64encode(sio.read()).decode('utf-8')
         images.append(image)
 
-    # reverse scale transformation to get the original coordinates
+   
     df[['longitude', 'latitude']] = scaler.inverse_transform(df[['longitude', 'latitude']])
 
-    # calculate cluster centers
+
     cluster_centers = df.groupby('cluster')[['longitude', 'latitude']].mean().reset_index()
 
-    # initialize the map with the first cluster's coordinates
+   
 
     cluster_map = python.config.map
-    # add a marker for each cluster center
+
     for _, row in cluster_centers.iterrows():
         folium.Marker(
             location=[row['longitude'], row['latitude']],
             popup=f"Cluster {row['cluster']}"
         ).add_to(cluster_map)
 
-    # save the map as HTML
+
     python.config.map = cluster_map
 
     return jsonify({'images': images}), 200

@@ -36,11 +36,11 @@
       gap: 20px;
       margin-bottom: 30px;
       flex-wrap: wrap;
-      /* This is to add some space between the buttons. */
+
     }
 
     .button-36 {
-      /* existing styles here... */
+
       background-image: linear-gradient(
         92.88deg,
         #455eb5 9.16%,
@@ -67,7 +67,6 @@
       -webkit-user-select: none;
       touch-action: manipulation;
 
-      /* Add the following line to center text vertically: */
       display: flex;
       align-items: center;
       justify-content: center;
@@ -138,14 +137,14 @@
       border-radius: 50px;
       padding: 2px;
       font-size: 20px;
-      /* font-size was incorrect previously */
+
       background-image: radial-gradient(circle, #553c9a, #ee4b2b);
       font-family: "sans-serif";
       margin: auto;
-      /* auto margins are applied */
+   
       display: block;
       max-width: max-content;
-      /* set to block for auto margins to work */
+    
     }
 
     .customfile::-webkit-file-upload-button {
@@ -162,7 +161,7 @@
     #upload-csv {
     
       margin: auto;
-      /* auto margins are applied */
+ 
       display: block;
       margin-top: 10px;
       margin-bottom: 30px;
@@ -182,7 +181,7 @@
 
     #results {
       margin: auto;
-      /* auto margins are applied */
+   
     }
 
     @keyframes slideDown {
@@ -219,7 +218,7 @@
       <button class="button-36" id="download">Download CSV</button>
       <button class="button-36" id="clear-button">Clear Results</button>
     </div>
-    <!-- New download button -->
+
 
     <input class="customfile" type="file" id="csv-upload" />
     <button class="button-36" id="upload-csv">Upload CSV</button>
@@ -254,7 +253,7 @@
           });
       });
 
-      // Event listener for the download button
+  
       document.getElementById("download").addEventListener("click", () => {
         window.location.href = "/download_results";
       });
@@ -281,7 +280,7 @@
 
       const clearButton = document.getElementById("clear-button");
 
-      // Add click handler
+ 
       clearButton.addEventListener("click", () => {
         fetch("/clear_results")
           .then((response) => {

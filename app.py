@@ -64,8 +64,8 @@ def predict_class(img):
     inputs = processor(text=prompt, images=image, return_tensors="pt", padding=True)
 
     outputs = model(**inputs)
-    logits_per_image = outputs.logits_per_image # this is the image-text similarity score
-    probs = logits_per_image.softmax(dim=1) # we can take the softmax to get the label probabilities
+    logits_per_image = outputs.logits_per_image 
+    probs = logits_per_image.softmax(dim=1) 
     max_index = torch.argmax(probs) 
     
     
@@ -107,18 +107,15 @@ def process_images():
 
     if not os.path.exists(csv_file_path):
 
-        # File does not exist, create it   
         with open(csv_file_path, 'w') as f:
             pass
         
-    # Clear the content of the CSV and write the column titles
     column_titles = ['x1','y1','x2','y2','longitude','latitude','altitude','image_name','number','type']
    
     with open(csv_file_path, 'r') as read_file:
         first_line = read_file.readline()
 
     if not first_line:
-        # File is empty
         with open(csv_file_path, 'w', newline='') as write_file:   
             writer = csv.writer(write_file)
             writer.writerow(column_titles)
@@ -139,9 +136,9 @@ def process_images():
     total = []
     
     for file in files:
-        # read the image file
+  
         filestr = file.read()
-        # convert string data to numpy arra
+    
 
         image_name = secure_filename(file.filename)
         
@@ -248,20 +245,19 @@ def process_images():
 
 @app.route('/clear_results')
 def clear_results():
-  # Open detections.csv in write mode
-#  global csv_file
+
   python.config.csv_file = pd.DataFrame()
   
   
   with open('detections.csv', 'w') as f:  
-    pass # Truncate the file
+    pass 
  
 
   return jsonify({'message': 'Results cleared'})
 
 @app.route('/get_results')
 def get_results():
-#  global csv_file
+
   return python.config.csv_file.to_csv()
 
 
@@ -270,12 +266,12 @@ def get_results():
   
 @app.route('/download_results')
 def download_results():
-  #  global csv_file
+ 
     str_io = StringIO()
     python.config.csv_file.to_csv(str_io, index=False)
     csv_data = str_io.getvalue()
 
-    # Create a Flask response with the CSV data and send it
+
     response = Response(csv_data, mimetype='text/csv')
     response.headers.set("Content-Disposition", "attachment", filename="detections.csv")
     return response
@@ -286,14 +282,13 @@ def download_map():
 
     response = Response(html_map_str, mimetype='text/html')
 
-    # Set Content-Disposition header
     response.headers["Content-Disposition"] = "attachment; filename=map.html"
 
     return response
 
 @app.route('/upload_csv', methods=['POST'])
 def upload_csv():
- # global csv_file
+
   csv_f = request.files['csv']
 
   python.config.csv_file = pd.read_csv(csv_f)
@@ -314,14 +309,14 @@ def update_class():
     df.loc[index, 'type'] = new_class
   python.config.csv_file = df
   
-  # Update CSV file
+
   df.to_csv('detections.csv', index=False)
   
-  # Return updated row as a JSON
+ 
   if new_class == "repeated trash":
     return jsonify({"message": "Row deleted"}), 200
   else:
-    # Return updated row as a JSON
+
     return jsonify(df.loc[index].to_dict()), 200
 
 

@@ -42,7 +42,7 @@ def mapping(fast,skip=False):
 
             transformer = Transformer.from_crs("EPSG:3857", "EPSG:4326", always_xy=True)
 
-            # Calculate the top left corner of the bounding box
+      
             tl_lon, tl_lat = transformer.transform(gsd * bbox_pixels[0], gsd * bbox_pixels[1])
 
             long_temp, lat_temp = transformer.transform(gsd * 2736, gsd * 1824)
@@ -54,7 +54,6 @@ def mapping(fast,skip=False):
             tl_lon += ref_lon
             tl_lat += ref_lat
 
-            # Calculate the bottom right corner of the bounding box
             br_lon, br_lat = transformer.transform(gsd * bbox_pixels[2], gsd * bbox_pixels[3])
             br_lon += ref_lon
             br_lat += ref_lat

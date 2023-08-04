@@ -7,7 +7,7 @@
     #submit-button {
      
       margin: auto;
-      /* auto margins are applied */
+
       display: block;
       margin-top: 10px;
       margin-bottom: 30px;
@@ -20,14 +20,14 @@
       border-radius: 50px;
       padding: 2px;
       font-size: 20px;
-      /* font-size was incorrect previously */
+     
       background-image: radial-gradient(circle, #553c9a, #ee4b2b);
       font-family: "sans-serif";
       margin: auto;
-      /* auto margins are applied */
+  
       display: block;
       max-width: max-content;
-      /* set to block for auto margins to work */
+   
     }
 
     .customfile::-webkit-file-upload-button {
@@ -78,11 +78,11 @@
       justify-content: center;
       gap: 20px;
       flex-wrap: wrap;
-      /* This is to add some space between the buttons. */
+   
     }
 
     .button-36 {
-      /* existing styles here... */
+     
       background-image: linear-gradient(92.88deg,
           #455eb5 9.16%,
           #5643cc 43.89%,
@@ -107,7 +107,7 @@
       -webkit-user-select: none;
       touch-action: manipulation;
 
-      /* Add the following line to center text vertically: */
+    
       display: flex;
       align-items: center;
       justify-content: center;
@@ -140,9 +140,9 @@
 
     .loader {
       border: 16px solid #f3f3f3;
-      /* Light grey */
+  
       border-top: 16px solid #3498db;
-      /* Blue */
+ 
       border-radius: 50%;
       width: 120px;
       height: 120px;
@@ -152,7 +152,7 @@
       margin-right: auto;
       margin-top: 20px;
       margin-bottom: 10px;
-      /* Hidden by default */
+    
     }
 
     @keyframes spin {
@@ -219,9 +219,9 @@
 
   <div style="margin: 10px 0"></div>
 
-  <!-- Add the loader here -->
+
   <div class="loader" id="loader"></div>
-  <!-- Add status text here -->
+
   <div class="loading-status" id="loading-status"></div>
 
   <div id="results"></div>
@@ -263,24 +263,24 @@
 
             data.predicted_classes.forEach((row, i) => {
               const div = document.createElement("div");
-              div.style.display = "grid"; // Set div as a grid container
-              div.style.gridTemplateColumns = "1fr 1fr 1fr"; // Divide the container into 3 equal parts
-              div.style.alignItems = "center"; // Vertically center the contents
-              div.style.justifyItems = "center"; // Horizontally center the contents
-              div.style.marginTop = "10px"; // Add space between divs
+              div.style.display = "grid"; 
+              div.style.gridTemplateColumns = "1fr 1fr 1fr"; 
+              div.style.alignItems = "center"; 
+              div.style.justifyItems = "center"; 
+              div.style.marginTop = "10px"; 
 
               const p = document.createElement("p");
               p.textContent = row[0] + ", " + row[1] + ", " + row[2];
-              div.appendChild(p); // Add the paragraph to the div
+              div.appendChild(p); 
 
               const img = document.createElement("img");
               img.src = "data:image/jpg;base64," + data.crops[i];
               img.width = 100;
-              div.appendChild(img); // Add the image to the div
+              div.appendChild(img); 
 
               const actionDiv = document.createElement("div");
-              actionDiv.style.display = "flex"; // Set actionDiv as a flex container
-              actionDiv.style.justifyContent = "center"; // Horizontally center the contents
+              actionDiv.style.display = "flex"; 
+              actionDiv.style.justifyContent = "center"; 
 
               const select = document.createElement("select");
               select.className = "button-36";
@@ -314,28 +314,27 @@
                 fetch(`/update_class?index=${i}&new_class=${select.value}`)
                   .then((response) => response.json())
                   .then((data) => {
-                    // Do something with the data
-                    console.log(data);
+                 
                   });
               });
 
-              // Add the select and button to the actionDiv
+          
               actionDiv.appendChild(select);
               actionDiv.appendChild(button);
 
-              div.appendChild(actionDiv); // Add the actionDiv to the div
+              div.appendChild(actionDiv); 
 
               resultsDiv.appendChild(div);
             });
           });
 
-        // Clear status text when all done
+       
         loadingStatus.textContent = "";
       })
       .catch((error) => {
-        // Hide loader in case of error
+     
         loader.style.display = "none";
-        // Clear status text in case of error
+       
         loadingStatus.textContent = "";
       });
   </script>

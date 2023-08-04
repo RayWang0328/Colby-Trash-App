@@ -47,7 +47,7 @@ git clone https://github.com/RayWang0328/Colby-Trash-App.git
 **For Windows Users:**
 
 ```
-cd Colby-Trash-App
+cd Trash-Detection-App
 py -3 -m venv .venv
 .venv\Scripts\activate
 ```
@@ -55,7 +55,7 @@ py -3 -m venv .venv
 **For Mac Users:**
 
 ```
-cd Colby-Trash-App
+cd Trash-Detection-App
 python3 -m venv .venv
 . .venv/bin/activate
 ```

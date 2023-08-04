@@ -22,7 +22,7 @@ Still working on it ⚙️
 
 https://github.com/RayWang0328/Colby-Trash-App/assets/19866871/f9c72a17-f664-4ac9-9043-45be41a96a5e
 
-## Local Instillation 🛠️ 
+## Local Installation 🛠️ 
 
 ### 0. CPU or GPU
 It is advisable to run this program on your local machine only if you have a GPU that is CUDA compatible. The reason for this is because the models used in this app are pretty heavy, computationally. 
